@@ -12,8 +12,16 @@ window.addEventListener('load', function() {
 						$('#suggestions').append('<li>' + name +'</li>');
 					}
 				},
+				error: function() {
+					$('#suggestions').html('');
+				}
 			});
 		}
+	});
+
+	$('#submit-button').click(function(e) {
+		e.preventDefault();
+		$('#city-text-area').text($('#city-input').val());
 	});
 
 });
