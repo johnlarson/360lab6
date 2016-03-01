@@ -39,4 +39,12 @@ window.addEventListener('load', function() {
 			},
 		});
 	});
+
+	$.ajax({
+		url: 'http://api.icndb.com/jokes/random?exclude=[explicit]&limitTo=[nerdy]',
+		dataType: 'json',
+		success: function(data) {
+			$('#chuck').text(data.value.joke);
+		}
+	});
 });
