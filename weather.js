@@ -1,10 +1,10 @@
 window.addEventListener('load', function() {
 
 	window.addEventListener('keyup', function(e) {
-		if($('#city-input').focus()) {
+		if($('#city-input').is(':focus')) {
 			$.ajax({
-				url: 'https://students.cs.byu.edu/~clement/CS360/ajax/getcity.cgi?q=' + $('#city-input').val(),
-				dataType: 'json',
+				url: 'http://ec2-52-87-224-87.compute-1.amazonaws.com:3000/getcity/?q=' + $('#city-input').val(),
+				dataType: 'jsonp',
 				success: function(data) {
 					$('#suggestions').html('');
 					for(var i = 0; i < data.length; i++) {
@@ -12,7 +12,7 @@ window.addEventListener('load', function() {
 						$('#suggestions').append('<li>' + name +'</li>');
 					}
 				},
-				error: function() {
+				error: function(xhr, status, error) {
 					$('#suggestions').html('');
 				}
 			});
@@ -40,11 +40,30 @@ window.addEventListener('load', function() {
 		});
 	});
 
+	$('#sum-submit').click(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'http://ec2-52-87-224-87.compute-1.amazonaws.com:3000/sum/?nums=' + $('#sum-input').val(),
+			dataType: 'jsonp',
+			success: function(data) {
+				$('#sum').text(data.sum);
+			},
+			error: function(xhr, status, error) {
+				$('#sum').text('Sorry, there was an error summing your numbers.');
+			},
+		});
+	});
+
 	$.ajax({
 		url: 'http://api.icndb.com/jokes/random?exclude=[explicit]&limitTo=[nerdy]',
 		dataType: 'json',
 		success: function(data) {
 			$('#chuck').text(data.value.joke);
-		}
+		},
+		error: function(xhr, status, error) {
+			console.log(error);
+			console.log(status);
+		},
 	});
+
 });
